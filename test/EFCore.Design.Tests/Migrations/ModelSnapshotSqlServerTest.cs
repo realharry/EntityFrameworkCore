@@ -3186,9 +3186,10 @@ namespace RootNamespace
         {
             var modelBuilder = CreateConventionalModelBuilder();
             modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.Snapshot);
+            modelBuilder.Model.RemoveAnnotation(CoreAnnotationNames.ProductVersionAnnotation);
             buildModel(modelBuilder);
 
-            modelBuilder.GetInfrastructure().Metadata.Validate();
+            modelBuilder.FinalizeModel();
             CreateModelValidator().Validate(modelBuilder.Model);
             var model = modelBuilder.Model;
 
@@ -3238,6 +3239,7 @@ namespace RootNamespace
                 null);
 
             var builder = new ModelBuilder(new ConventionSet());
+            builder.Model.RemoveAnnotation(CoreAnnotationNames.ProductVersionAnnotation);
 
             buildModelMethod.Invoke(
                 Activator.CreateInstance(factoryType),

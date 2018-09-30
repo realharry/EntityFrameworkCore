@@ -79,11 +79,10 @@ namespace Microsoft.EntityFrameworkCore.Infrastructure
 
             var modelBuilder = new ModelBuilder(conventionSet);
             var model = modelBuilder.GetInfrastructure().Metadata;
-            model.SetProductVersion(ProductInfo.GetVersion());
 
             Dependencies.ModelCustomizer.Customize(modelBuilder, context);
 
-            model.Validate();
+            modelBuilder.FinalizeModel();
 
             validator.Validate(model);
 
